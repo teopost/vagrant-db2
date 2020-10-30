@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
+DB2SETUPFILE=v11.1.4fp4a_linuxx64_server_t.tar.gz
+
 echo -e "--- DB2 11.1 on Centos 7 ---"
 
-echo -e "*** Update libraries"
+if [ ! -f /vagrant/$DB2SETUPFILE ]; then
+   echo "File does not exist"
+   exit 1
+fi
+
+echo -e "*** Update OS packages"
 
 yum update -y
 
@@ -29,6 +36,7 @@ yum install -y libaio.so.1
 yum install -y gcc-c++
 yum install -y libaio
 
+echo -e "*** Install JDK"
 yum install -y java-1.8.0-openjdk
 
 echo -e "*** Disable selinux"
@@ -38,7 +46,7 @@ setenforce 0
 
 echo -e "*** Untar db2"
 mkdir -p /opt/softinst
-tar xvf /vagrant/v11.1.4fp4a_linuxx64_server_t.tar.gz -C /opt/softinst
+tar xvf /vagrant/$DB2SETUPFILE -C /opt/softinst
 
 echo -e "*** Creating response file"
 echo "
